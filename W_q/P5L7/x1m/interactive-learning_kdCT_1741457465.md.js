@@ -7,7 +7,6 @@ import rollup_start_dev from './rollup_start_dev';
 import replace from '@rollup/plugin-replace';
 
 const production = !process.env.ROLLUP_WATCH;
-
 export default {
 	input: 'src/main.js',
 	output: {
