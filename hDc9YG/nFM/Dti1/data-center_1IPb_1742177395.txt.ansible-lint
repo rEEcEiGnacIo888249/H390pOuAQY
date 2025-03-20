@@ -18,7 +18,6 @@ mock_roles:
 # Ref: https://github.com/ansible-community/ansible-lint/blob/main/.ansible-lint#L41-L49
 enable_list:
   - 'fqcn-builtins'
-  - 'no-log-password'
   - 'no-same-owner'
 
 # List of rules currently ignored in DebOps repository
