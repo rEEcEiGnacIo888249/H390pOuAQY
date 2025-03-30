@@ -26,7 +26,6 @@ skip_list:
   # The 'collections' keyword in playbooks is currently needed to ensure that
   # FQCN role lookup works across multiple Ansible Collections. Therefore let's
   # skip warnings for it for now.
-  #
   # This can be removed when situation with publishing DebOps Collection on
   # Ansible Galaxy in multiple tarballs is resolved.
   - 'fqcn[keyword]'
