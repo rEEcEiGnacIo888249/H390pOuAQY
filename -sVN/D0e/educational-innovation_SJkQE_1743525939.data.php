@@ -29,7 +29,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
     /**
     *   The wonderful autoloader!
-    *   Death to procedural jargon-dargon bootstrappies!
     *
     */
     protected function _initAutoload()
