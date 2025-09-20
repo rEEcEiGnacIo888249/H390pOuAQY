@@ -1,0 +1,132 @@
+// 代码生成时间: 2025-09-21 04:52:38
+package com.example;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class FolderStructureOrganizerApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(FolderStructureOrganizerApplication.class, args);
+    }
+}
+```
+
+FolderStructureController.java
+```java
+package com.example.controller;
+
+import com.example.dto.FolderStructureRequestDTO;
+import com.example.service.FolderStructureService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/folders")
+public class FolderStructureController {
+    @Autowired
+    private FolderStructureService service;
+
+    @PostMapping("/organize")
+    public ResponseEntity<String> organizeFolder(@RequestBody FolderStructureRequestDTO requestDTO) {
+        try {
+            service.organize(requestDTO);
+            return ResponseEntity.ok("Folder structure organized successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error organizing folder structure: " + e.getMessage());
+        }
+    }
+}
+```
+
+FolderStructureService.java
+```java
+package com.example.service;
+
+import com.example.exception.FolderStructureException;
+import com.example.dto.FolderStructureRequestDTO;
+import org.springframework.stereotype.Service;
+
+@Service
+public class FolderStructureService {
+    public void organize(FolderStructureRequestDTO requestDTO) throws FolderStructureException {
+        // Imagine some complex logic here that organizes folder structure
+        // For demonstration, let's throw an exception if something goes wrong
+        if (requestDTO.getFolderPath() == null) {
+            throw new FolderStructureException("Folder path cannot be null.");
+        }
+        // More logic...
+    }
+}
+```
+
+FolderStructureException.java
+```java
+package com.example.exception;
+
+public class FolderStructureException extends RuntimeException {
+    public FolderStructureException(String message) {
+        super(message);
+    }
+}
+```
+
+FolderStructureRequestDTO.java
+```java
+package com.example.dto;
+
+public class FolderStructureRequestDTO {
+    private String folderPath;
+    // Other fields and methods...
+
+    public String getFolderPath() {
+        return folderPath;
+    }
+    public void setFolderPath(String folderPath) {
+        this.folderPath = folderPath;
+    }
+    // Other getters and setters...
+}
+```
+
+FolderUtils.java
+```java
+package com.example.util;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
+
+public class FolderUtils {
+    public static void organizeFolder(String folderPath) {
+        // Logic to organize the folder, for example, sorting files, creating subfolders, etc.
+    }
+}
+```
+
+application.properties
+```properties
+# Application properties
+spring.application.name=folder-structure-organizer
+# More properties...
+```
+
+pom.xml
+```xml
+<project xsi:schemaLocation="..."
+    xmlns="..."
+    xmlns:xsi="...">
+    <!-- Project configuration, including dependencies for Spring Boot, lombok, etc. -->
+</project>
+```
+
+.gitignore
+```
+# .gitignore content to exclude build and temporary files
+target/
+*.class
+.DS_Store
+*.log
