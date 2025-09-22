@@ -1,0 +1,136 @@
+// 代码生成时间: 2025-09-22 15:30:53
+package com.example.inventory;
+
+import org.springframework.boot.SpringApplication;
+# NOTE: 重要实现细节
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+# 扩展功能模块
+
+@SpringBootApplication
+# 添加错误处理
+public class InventoryApplication {
+# FIXME: 处理边界情况
+    public static void main(String[] args) {
+        SpringApplication.run(InventoryApplication.class, args);
+# TODO: 优化性能
+    }
+}
+
+/* Product.java - 库存项实体 */
+package com.example.inventory.model;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.io.Serializable;
+
+@Entity
+public class Product implements Serializable {
+    @Id
+    private Long id;
+    private String name;
+    private int quantity;
+# 改进用户体验
+    // getters and setters
+}
+
+/* ProductRepository.java - JPA Repository 接口 */
+# FIXME: 处理边界情况
+package com.example.inventory.repository;
+
+import com.example.inventory.model.Product;
+# 添加错误处理
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+# 添加错误处理
+
+@Repository
+public interface ProductRepository extends JpaRepository<Product, Long> {
+}
+
+/* InventoryService.java - 业务逻辑服务 */
+package com.example.inventory.service;
+
+import com.example.inventory.model.Product;
+# 改进用户体验
+import com.example.inventory.repository.ProductRepository;
+# 添加错误处理
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class InventoryService {
+    @Autowired
+    private ProductRepository productRepository;
+
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+
+    public Product getProductById(Long id) {
+# 添加错误处理
+        return productRepository.findById(id).orElseThrow(() -> new InventoryException("Product not found"));
+    }
+    // Other methods for adding, updating, deleting products
+}
+# 添加错误处理
+
+/* InventoryException.java - 自定义异常 */
+# FIXME: 处理边界情况
+package com.example.inventory.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
+public class InventoryException extends ResponseStatusException {
+    public InventoryException(String reason) {
+        super(HttpStatus.NOT_FOUND, reason);
+    }
+# 扩展功能模块
+}
+# 扩展功能模块
+
+/* InventoryController.java - REST API 控制器 */
+package com.example.inventory.controller;
+
+import com.example.inventory.model.Product;
+import com.example.inventory.service.InventoryService;
+import com.example.inventory.exception.InventoryException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+# 增强安全性
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/inventory")
+public class InventoryController {
+    @Autowired
+    private InventoryService inventoryService;
+
+    @GetMapping("/products")
+    public List<Product> getAllProducts() {
+        return inventoryService.getAllProducts();
+    }
+
+    @GetMapping("/products/{id}")
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(inventoryService.getProductById(id));
+        } catch (InventoryException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+    // Other endpoints for adding, updating, deleting products
+}
+# 改进用户体验
+
+/* application.properties - 配置文件 */
+spring.datasource.url=jdbc:mysql://localhost:3306/inventory_db
+spring.datasource.username=root
+spring.datasource.password=password
+# 优化算法效率
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
