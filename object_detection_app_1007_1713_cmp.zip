@@ -1,0 +1,123 @@
+// 代码生成时间: 2025-10-07 17:13:48
+object_detection_app.zip:
+│
+├── pom.xml
+├── src
+│   ├── main
+│   │   ├── Java
+│   │   │   ├── com
+│   │   │   │   ├── yourpackage
+│   │   │   │   │   ├── controller
+│   │   │   │   │   │   ├── ObjectDetectionController.java
+│   │   │   │   │   │   ├── ObjectDetectionService.java
+│   │   │   │   │   │   └── ObjectDetectionException.java
+│   │   │   ├── resources
+│   │   │   │   ├── application.properties
+│   │   │   │   ├── static
+│   │   │   │   └── templates
+│   │   └── resources
+│   │
+│   └── test
+│       ├── Java
+│       │   ├── com
+│       │   │   ├── yourpackage
+│       │   │   │   ├── ObjectDetectionControllerTest.java
+│   │
+│   
+
+pom.xml:
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.yourpackage</groupId>
+    <artifactId>object_detection_app</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <!-- ... other configurations ... -->
+</project>
+
+ObjectDetectionController.java:
+package com.yourpackage.controller;
+
+import com.yourpackage.service.ObjectDetectionService;
+import com.yourpackage.exception.ObjectDetectionException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/objects")
+public class ObjectDetectionController {
+
+    @Autowired
+    private ObjectDetectionService objectDetectionService;
+
+    @PostMapping("/detect")
+    public ResponseEntity<?> detectObject(@RequestParam("image") String image) {
+        try {
+            String detectionResult = objectDetectionService.detect(image);
+            return ResponseEntity.ok(detectionResult);
+        } catch (ObjectDetectionException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+}
+
+ObjectDetectionService.java:
+package com.yourpackage.service;
+
+import com.yourpackage.exception.ObjectDetectionException;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ObjectDetectionService {
+
+    public String detect(String image) throws ObjectDetectionException {
+        // Implement object detection logic here
+        // For the sake of example, just returning a dummy response
+        return "Object detected in image";
+    }
+}
+
+ObjectDetectionException.java:
+package com.yourpackage.exception;
+
+public class ObjectDetectionException extends Exception {
+
+    public ObjectDetectionException(String message) {
+        super(message);
+    }
+}
+
+application.properties:
+# Configuration properties for the application can be set here
+
+ObjectDetectionControllerTest.java:
+package com.yourpackage;
+
+import com.yourpackage.controller.ObjectDetectionController;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(ObjectDetectionController.class)
+public class ObjectDetectionControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private ObjectDetectionService objectDetectionService;
+
+    @Test
+    public void testDetectObject() throws Exception {
+        this.mockMvc.perform(post("/api/objects/detect").param("image", "image.jpg"))
+                .andExpect(status().isOk());
+    }
+}
